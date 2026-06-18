@@ -1,3 +1,16 @@
+<div align="center">
+  <img src="docs/img.png" alt="FastMath Logo" width="200" height="200"/>
+  <h1>FastMath</h1>
+  <p><strong>简单而强大的 Java SIMD 数学编程库</strong></p>
+
+  <p>
+    <a href="#"><img src="https://img.shields.io/badge/Java-26-blue.svg" alt="Java Version"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/Maven-3.8+-green.svg" alt="Maven"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/JUnit-5.12.2-orange.svg" alt="JUnit"/></a>
+  </p>
+</div>
+
 # FastMath
 
 基于 Java Vector API (SIMD) 的高性能数学库，提供向量化的数组运算、快速标量数学函数、矩阵运算、复数运算和 FFT 功能。
@@ -19,23 +32,19 @@
 
 ## 快速开始
 
-### 构建
+### 前置要求
 
-```bash
-mvn clean compile
-```
+- Java 26+
+- Maven 3.8+
 
-### 运行测试
+### 安装依赖
 
-```bash
-mvn test
-```
-
-### 运行基准测试
-
-```bash
-mvn clean package
-java --enable-preview --add-modules=jdk.incubator.vector -jar target/benchmarks.jar
+```xml
+<dependency>
+    <groupId>io.github.tuyucheng777</groupId>
+    <artifactId>fastmath</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 ## 模块概览
