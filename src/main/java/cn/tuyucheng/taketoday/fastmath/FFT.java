@@ -1,33 +1,33 @@
 package cn.tuyucheng.taketoday.fastmath;
 
-/**
- * Fast Fourier Transform (FFT) implementation using Cooley-Tukey algorithm.
- * 
- * <p>This class provides high-performance FFT and IFFT operations for complex arrays.
- * Uses iterative in-place implementation for maximum efficiency.
- * 
- * <p>FFT size must be a power of 2. Use {@link #nextPowerOfTwo(int)} to find
- * the next valid size.
- * 
- * <h2>Algorithm</h2>
- * <p>Implements the Cooley-Tukey radix-2 decimation-in-time algorithm.
- * Time complexity: O(n log n)
- * 
- * <h2>Example usage:</h2>
- * <pre>{@code
- * // Create a signal
- * float[] signal = new float[1024]; // interleaved [re, im, re, im, ...]
- * // ... fill signal ...
- * 
- * // Forward FFT
- * float[] spectrum = FFT.fft(signal);
- * 
- * // Inverse FFT
- * float[] reconstructed = FFT.ifft(spectrum);
- * }</pre>
- * 
- * @see ComplexMath for complex array operations
- */
+/// Fast Fourier Transform (FFT) implementation using Cooley-Tukey algorithm.
+///
+/// This class provides high-performance FFT and IFFT operations for complex arrays.
+/// Uses iterative in-place implementation for maximum efficiency.
+///
+/// FFT size must be a power of 2. Use `nextPowerOfTwo(int)` to find
+/// the next valid size.
+///
+/// ## Algorithm
+///
+/// Implements the Cooley-Tukey radix-2 decimation-in-time algorithm.
+/// Time complexity: O(n log n)
+///
+/// ## Example usage
+///
+/// ```java
+/// // Create a signal
+/// float[] signal = new float[1024]; // interleaved [re, im, re, im, ...]
+/// // ... fill signal ...
+///
+/// // Forward FFT
+/// float[] spectrum = FFT.fft(signal);
+///
+/// // Inverse FFT
+/// float[] reconstructed = FFT.ifft(spectrum);
+/// ```
+///
+/// @see ComplexMath for complex array operations
 public final class FFT {
 
     private FFT() {}
@@ -44,68 +44,58 @@ public final class FFT {
         }
     }
 
-    /**
-     * Computes the FFT of a complex array.
-     * 
-     * <p>The input array must have length that is a power of 2.
-     * The array is modified in place and also returned.
-     * 
-     * @param data interleaved complex array [re0, im0, re1, im1, ...]
-     * @return the same array with FFT result
-     * @throws IllegalArgumentException if length is not a power of 2
-     */
+    /// Computes the FFT of a complex array.
+    ///
+    /// The input array must have a length that is a power of 2.
+    /// The array is modified in place and also returned.
+    ///
+    /// @param data the interleaved complex array in [re0, im0, re1, im1, ...] format; length must be a power of 2
+    /// @return the same array containing the FFT result
+    /// @throws IllegalArgumentException if the array length is not a power of 2
     public static float[] fft(float[] data) {
         validatePowerOfTwo(data.length);
         return fftInPlace(data, false);
     }
 
-    /**
-     * Computes the Inverse FFT of a complex array.
-     * 
-     * <p>The result is scaled by 1/n so that IFFT(FFT(x)) = x.
-     * 
-     * @param data interleaved complex array [re0, im0, re1, im1, ...]
-     * @return the same array with IFFT result
-     * @throws IllegalArgumentException if length is not a power of 2
-     */
+    /// Computes the Inverse FFT of a complex array.
+    ///
+    /// The result is scaled by 1/n so that `IFFT(FFT(x)) = x`.
+    ///
+    /// @param data the interleaved complex array in [re0, im0, re1, im1, ...] format; length must be a power of 2
+    /// @return the same array containing the IFFT result, scaled by 1/n
+    /// @throws IllegalArgumentException if the array length is not a power of 2
     public static float[] ifft(float[] data) {
         validatePowerOfTwo(data.length);
         return ifftInPlace(data);
     }
 
-    /**
-     * Computes the FFT with output in a new array.
-     * 
-     * @param data interleaved complex array
-     * @return new array with FFT result
-     */
+    /// Computes the FFT with output in a new array, preserving the input.
+    ///
+    /// @param data the interleaved complex array; length must be a power of 2
+    /// @return a new array containing the FFT result
     public static float[] fftCopy(float[] data) {
         validatePowerOfTwo(data.length);
         float[] result = data.clone();
         return fftInPlace(result, false);
     }
 
-    /**
-     * Computes the IFFT with output in a new array.
-     * 
-     * @param data interleaved complex array
-     * @return new array with IFFT result
-     */
+    /// Computes the IFFT with output in a new array, preserving the input.
+    ///
+    /// @param data the interleaved complex array; length must be a power of 2
+    /// @return a new array containing the IFFT result, scaled by 1/n
     public static float[] ifftCopy(float[] data) {
         validatePowerOfTwo(data.length);
         float[] result = data.clone();
         return ifftInPlace(result);
     }
 
-    /**
-     * Computes real-valued FFT (RFFT).
-     * 
-     * <p>For real input, the FFT is conjugate symmetric:
-     * X[k] = conj(X[n-k]), so only half the spectrum is needed.
-     * 
-     * @param data real-valued input array (length must be power of 2)
-     * @return complex spectrum of length n/2 + 1 complex numbers (n+2 floats)
-     */
+    /// Computes real-valued FFT (RFFT).
+    ///
+    /// For real input, the FFT is conjugate symmetric:
+    /// `X[k] = conj(X[n-k])`, so only half the spectrum is needed.
+    ///
+    /// @param data the real-valued input array; length must be a power of 2
+    /// @return the complex spectrum of length `n/2 + 1` complex numbers (`n + 2` floats)
     public static float[] rfft(float[] data) {
         int n = data.length;
         validatePowerOfTwo(n);
@@ -126,13 +116,11 @@ public final class FFT {
         return result;
     }
 
-    /**
-     * Computes inverse real-valued FFT.
-     * 
-     * @param spectrum complex spectrum (from rfft)
-     * @param outputLen expected output length
-     * @return real-valued time domain signal
-     */
+    /// Computes inverse real-valued FFT.
+    ///
+    /// @param spectrum the complex spectrum produced by `rfft`
+    /// @param outputLen the expected length of the real-valued output signal
+    /// @return the real-valued time domain signal of length `outputLen`
     public static float[] irfft(float[] spectrum, int outputLen) {
         int n = outputLen;
         float[] complex = new float[n * 2];
@@ -162,9 +150,11 @@ public final class FFT {
 
     // ==================== Core FFT Implementation ====================
 
-    /**
-     * In-place FFT implementation using iterative Cooley-Tukey algorithm.
-     */
+    /// In-place FFT implementation using iterative Cooley-Tukey algorithm.
+    ///
+    /// @param data the interleaved complex array to transform in place
+    /// @param inverse true for IFFT, false for forward FFT
+    /// @return the same array with the FFT/IFFT result
     private static float[] fftInPlace(float[] data, boolean inverse) {
         int n = data.length / 2;  // number of complex elements
         
@@ -216,9 +206,12 @@ public final class FFT {
         return data;
     }
 
-    /**
-     * In-place IFFT implementation.
-     */
+    /// In-place IFFT implementation.
+    ///
+    /// Applies forward FFT with conjugated twiddle factors then scales by 1/n.
+    ///
+    /// @param data the interleaved complex array to transform in place
+    /// @return the same array with the IFFT result, scaled by 1/n
     private static float[] ifftInPlace(float[] data) {
         int n = data.length / 2;
         
@@ -234,9 +227,9 @@ public final class FFT {
         return data;
     }
 
-    /**
-     * Bit-reversal permutation in place.
-     */
+    /// Bit-reversal permutation in place.
+    ///
+    /// @param data the interleaved complex array to permute
     private static void bitReverse(float[] data) {
         int n = data.length / 2;
         int logN = 31 - Integer.numberOfLeadingZeros(n);
@@ -257,9 +250,11 @@ public final class FFT {
         }
     }
 
-    /**
-     * Reverses the lower logN bits of x.
-     */
+    /// Reverses the lower `logN` bits of `x`.
+    ///
+    /// @param x the integer whose bits to reverse
+    /// @param logN the number of lower bits to reverse
+    /// @return the bit-reversed value
     private static int reverseBits(int x, int logN) {
         int result = 0;
         for (int i = 0; i < logN; i++) {
@@ -271,10 +266,11 @@ public final class FFT {
 
     // ==================== Twiddle Factor Management ====================
 
-    /**
-     * Gets twiddle factors from cache or computes them.
-     * Returns [cos(2π/m), sin(2π/m)] for m = 2, 4, 8, ..., n.
-     */
+    /// Gets twiddle factors from cache or computes them.
+    /// Returns `[cos(2π/m), sin(2π/m)]` for `m = 2, 4, 8, ..., n`.
+    ///
+    /// @param n the number of complex elements; must be a power of 2
+    /// @return an array of twiddle factors of length `2 * log2(n)`
     private static float[] getTwiddleFactors(int n) {
         int logN = 31 - Integer.numberOfLeadingZeros(n);
         if (logN < TWIDDLE_CACHE.length && TWIDDLE_CACHE[logN] != null) {
@@ -283,9 +279,10 @@ public final class FFT {
         return computeTwiddleFactors(n);
     }
 
-    /**
-     * Computes twiddle factors: cos(2π/m) and sin(2π/m) for m = 2, 4, 8, ..., n.
-     */
+    /// Computes twiddle factors: `cos(2π/m)` and `sin(2π/m)` for `m = 2, 4, 8, ..., n`.
+    ///
+    /// @param n the number of complex elements; must be a power of 2
+    /// @return an array of length `2 * log2(n)` containing `[cos, sin]` pairs
     private static float[] computeTwiddleFactors(int n) {
         int logN = 31 - Integer.numberOfLeadingZeros(n);
         float[] twiddle = new float[logN * 2];
@@ -302,16 +299,18 @@ public final class FFT {
 
     // ==================== Utility Methods ====================
 
-    /**
-     * Checks if n is a power of 2.
-     */
+    /// Checks if `n` is a power of 2.
+    ///
+    /// @param n the value to check
+    /// @return true if `n` is a positive power of 2
     public static boolean isPowerOfTwo(int n) {
         return n > 0 && (n & (n - 1)) == 0;
     }
 
-    /**
-     * Returns the smallest power of 2 >= n.
-     */
+    /// Returns the smallest power of 2 that is greater than or equal to `n`.
+    ///
+    /// @param n the value to find the next power of 2 for; if `n <= 0`, returns 1
+    /// @return the smallest power of 2 >= `n`
     public static int nextPowerOfTwo(int n) {
         if (n <= 0) return 1;
         int highestBit = Integer.highestOneBit(n);
@@ -319,9 +318,11 @@ public final class FFT {
         return highestBit << 1;
     }
 
-    /**
-     * Returns log2(n) for power of 2 values.
-     */
+    /// Returns `log2(n)` for power-of-2 values.
+    ///
+    /// @param n the value; must be a power of 2
+    /// @return the base-2 logarithm of `n`
+    /// @throws IllegalArgumentException if `n` is not a power of 2
     public static int log2(int n) {
         if (!isPowerOfTwo(n)) {
             throw new IllegalArgumentException("n must be a power of 2");
@@ -329,6 +330,10 @@ public final class FFT {
         return 31 - Integer.numberOfLeadingZeros(n);
     }
 
+    /// Validates that the given length is a power of 2.
+    ///
+    /// @param n the array length to validate
+    /// @throws IllegalArgumentException if `n` is not a power of 2
     private static void validatePowerOfTwo(int n) {
         if (!isPowerOfTwo(n)) {
             throw new IllegalArgumentException(
@@ -339,17 +344,23 @@ public final class FFT {
 
     // ==================== Double Precision FFT ====================
 
-    /**
-     * Double-precision FFT.
-     */
+    /// Double-precision FFT.
+    ///
+    /// @param data the interleaved double-precision complex array; length must be a power of 2
+    /// @return the same array containing the FFT result
+    /// @throws IllegalArgumentException if the array length is not a power of 2
     public static double[] fft(double[] data) {
         validatePowerOfTwo(data.length);
         return fftInPlaceD(data, false);
     }
 
-    /**
-     * Double-precision IFFT.
-     */
+    /// Double-precision IFFT.
+    ///
+    /// The result is scaled by 1/n so that `IFFT(FFT(x)) = x`.
+    ///
+    /// @param data the interleaved double-precision complex array; length must be a power of 2
+    /// @return the same array containing the IFFT result, scaled by 1/n
+    /// @throws IllegalArgumentException if the array length is not a power of 2
     public static double[] ifft(double[] data) {
         validatePowerOfTwo(data.length);
         int n = data.length / 2;
@@ -361,6 +372,11 @@ public final class FFT {
         return data;
     }
 
+    /// In-place double-precision FFT implementation using iterative Cooley-Tukey algorithm.
+    ///
+    /// @param data the interleaved double-precision complex array in [re0, im0, re1, im1, ...] format
+    /// @param inverse true for IFFT, false for forward FFT
+    /// @return the same array with the FFT/IFFT result
     private static double[] fftInPlaceD(double[] data, boolean inverse) {
         int n = data.length / 2;
         bitReverseD(data);
@@ -399,6 +415,9 @@ public final class FFT {
         return data;
     }
 
+    /// Bit-reversal permutation in place for double-precision data.
+    ///
+    /// @param data the interleaved double-precision complex array to permute
     private static void bitReverseD(double[] data) {
         int n = data.length / 2;
         int logN = 31 - Integer.numberOfLeadingZeros(n);
@@ -420,14 +439,12 @@ public final class FFT {
 
     // ==================== Convolution ====================
 
-    /**
-     * Computes convolution using FFT.
-     * conv(a, b) = IFFT(FFT(a) * FFT(b))
-     * 
-     * @param a first signal (interleaved complex)
-     * @param b second signal (interleaved complex)
-     * @return convolution result
-     */
+    /// Computes convolution using FFT.
+    /// `conv(a, b) = IFFT(FFT(a) * FFT(b))`
+    ///
+    /// @param a the first signal in interleaved complex format
+    /// @param b the second signal in interleaved complex format
+    /// @return the convolution result in interleaved complex format
     public static float[] convolve(float[] a, float[] b) {
         int lenA = a.length / 2;
         int lenB = b.length / 2;
@@ -464,10 +481,12 @@ public final class FFT {
         return result;
     }
 
-    /**
-     * Computes correlation using FFT.
-     * corr(a, b) = IFFT(FFT(a) * conj(FFT(b)))
-     */
+    /// Computes correlation using FFT.
+    /// `corr(a, b) = IFFT(FFT(a) * conj(FFT(b)))`
+    ///
+    /// @param a the first signal in interleaved complex format
+    /// @param b the second signal in interleaved complex format
+    /// @return the correlation result in interleaved complex format
     public static float[] correlate(float[] a, float[] b) {
         int lenA = a.length / 2;
         int lenB = b.length / 2;

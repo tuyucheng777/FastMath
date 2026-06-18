@@ -6,16 +6,14 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
-/**
- * Main class to run JMH benchmarks.
- * <p>
- * Run from command line:
- * java --enable-preview --add-modules=jdk.incubator.vector -cp target/classes:target/test-classes cn.tuyucheng.taketoday.fastmath.benchmark.BenchmarkRunner
- * <p>
- * Or build and run the JAR:
- * mvn clean package
- * java --enable-preview --add-modules=jdk.incubator.vector -jar target/benchmarks.jar
- */
+/// Main class to run JMH benchmarks.
+///
+/// Run from command line:
+/// `java --enable-preview --add-modules=jdk.incubator.vector -cp target/classes:target/test-classes cn.tuyucheng.taketoday.fastmath.benchmark.BenchmarkRunner`
+///
+/// Or build and run the JAR:
+/// `mvn clean package`
+/// `java --enable-preview --add-modules=jdk.incubator.vector -jar target/benchmarks.jar`
 public class BenchmarkRunner {
 
     static void main() throws RunnerException {

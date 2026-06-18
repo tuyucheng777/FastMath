@@ -4,13 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.tuyucheng.taketoday</groupId>
+    <groupId>io.github.tuyucheng777</groupId>
     <artifactId>fastmath</artifactId>
     <version>1.0.0</version>
+    <url>https://github.com/tuyucheng777/FastMath</url>
     <packaging>jar</packaging>
 
     <name>FastMath</name>
     <description>High-performance math library using Java Vector API (requires JDK 21+)</description>
+
+    <scm>
+        <connection>scm:git:git://github.com/tuyucheng777/FastMath.git</connection>
+        <developerConnection>scm:git:ssh://github.com:tuyucheng777/FastMath.git</developerConnection>
+        <url>https://github.com/tuyucheng777/FastMath/tree/main</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>tuyucheng777</name>
+            <email>tuyucheng777@gmail.com</email>
+            <url>https://github.com/tuyucheng777</url>
+        </developer>
+    </developers>
 
     <properties>
         <!-- Requires JDK 26+ for Vector API. Use JDK 26 for latest features. -->
@@ -114,6 +129,68 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
+                <configuration>
+                    <excludePackageNames>*.benchmark.*</excludePackageNames>
+                    <failOnError>false</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.10.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <checksums>required</checksums>
+                    <deploymentName>FastMath</deploymentName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.8</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 </project>

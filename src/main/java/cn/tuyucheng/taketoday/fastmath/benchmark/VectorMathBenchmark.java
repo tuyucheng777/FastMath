@@ -10,12 +10,10 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-/**
- * JMH benchmarks for FastMath library.
- * Compares Vector API operations against scalar implementations.
- * <p>
- * Run with: java --enable-preview --add-modules=jdk.incubator.vector -jar target/benchmarks.jar
- */
+/// JMH benchmarks for FastMath library.
+/// Compares Vector API operations against scalar implementations.
+///
+/// Run with: `java --enable-preview --add-modules=jdk.incubator.vector -jar target/benchmarks.jar`
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
